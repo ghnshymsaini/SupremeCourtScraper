@@ -54,19 +54,10 @@ def scrape_supreme_court(year):
 
 
 # API Endpoint to trigger the scraper
-@app.route("/scrape", methods=["POST"])
-def scrape():
-    api_key = request.headers.get("Authorization")
-    if api_key != f"Bearer {API_KEY}":
-        return jsonify({"error": "Unauthorized"}), 403
 
-    year = request.json.get("year")
-    if not year or not (1950 <= int(year) <= 2025):
-        return jsonify({"error": "Invalid year"}), 400
-
-    threading.Thread(target=scrape_supreme_court, args=(year,)).start()
-    return jsonify({"message": f"Scraping started for year {year}. PDFs will be stored securely."})
-
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"message": "Welcome to Supreme Court Scraper API. Use /scrape endpoint to start scraping."})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
